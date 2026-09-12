@@ -22,7 +22,7 @@ import torch
 from mmengine import Config
 from mmseg.models import build_segmentor
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # extra dirname: script now lives one level deeper, in occ4dgs_scripts/
 import model  # noqa: F401 -- triggers registry decorators
 from dataset import OPENOCC_DATASET, custom_collate_fn_temporal
 from torch.utils.data.dataloader import DataLoader
