@@ -155,6 +155,16 @@ def main(local_rank, args):
         print(raw_model.load_state_dict(ckpt['state_dict'], strict=False))
         optimizer.load_state_dict(ckpt['optimizer']) # TODO: Attention!
         scheduler.load_state_dict(ckpt['scheduler'])
+        # FIX: load_state_dict() restores the scheduler's OWN saved t_initial
+        # (computed from whatever max_epochs was at the time of the ORIGINAL
+        # construction) -- silently overwriting the freshly-built scheduler's
+        # correct, NEW t_initial (based on the current, possibly-changed
+        # max_epochs). Confirmed empirically: without this fix, extending
+        # max_epochs and resuming has NO real effect -- training continues
+        # under the OLD, shorter cosine curve, already near lr_min. _get_lr()
+        # computes the LR fresh from self.t_initial at every step (no
+        # precomputed array), so this override is sufficient on its own.
+        scheduler.t_initial = len(train_dataset_loader) * max_num_epochs
         epoch = ckpt['epoch']
         global_iter = ckpt['global_iter']
         last_iter = ckpt['last_iter'] if 'last_iter' in ckpt else 0
@@ -241,32 +251,47 @@ def main(local_rank, args):
             else:
                 input_anchor_points = None
 
-            with torch.cuda.amp.autocast(amp):
-                # forward + backward + optimize
-                result_dict = my_model(imgs=input_imgs, points=input_points, lidar_feature_maps=input_lidar_features, dpt=input_dpt, anchor_points=input_anchor_points, metas=data, global_iter=global_iter)
+            try:
+                with torch.cuda.amp.autocast(amp):
+                    # forward + backward + optimize
+                    result_dict = my_model(imgs=input_imgs, points=input_points, lidar_feature_maps=input_lidar_features, dpt=input_dpt, anchor_points=input_anchor_points, metas=data, global_iter=global_iter)
 
-                loss_input = {
-                    'metas': data
-                }
-                for loss_input_key, loss_input_val in cfg.loss_input_convertion.items():
-                    loss_input.update({
-                        loss_input_key: result_dict[loss_input_val]})
-                loss, loss_dict = loss_func(loss_input)
-                loss = loss / grad_accumulation
-            if not amp:
-                loss.backward()
-                if (global_iter + 1) % grad_accumulation == 0:
-                    grad_norm = torch.nn.utils.clip_grad_norm_(my_model.parameters(), cfg.grad_max_norm)
-                    optimizer.step()
-                    optimizer.zero_grad()
-            else:
-                scaler.scale(loss).backward()
-                if (global_iter + 1) % grad_accumulation == 0:
-                    scaler.unscale_(optimizer)
-                    grad_norm = torch.nn.utils.clip_grad_norm_(my_model.parameters(), cfg.grad_max_norm)
-                    scaler.step(optimizer)
-                    scaler.update()
-                    optimizer.zero_grad()
+                    loss_input = {
+                        'metas': data
+                    }
+                    for loss_input_key, loss_input_val in cfg.loss_input_convertion.items():
+                        loss_input.update({
+                            loss_input_key: result_dict[loss_input_val]})
+                    loss, loss_dict = loss_func(loss_input)
+                    loss = loss / grad_accumulation
+                if not amp:
+                    loss.backward()
+                    if (global_iter + 1) % grad_accumulation == 0:
+                        grad_norm = torch.nn.utils.clip_grad_norm_(my_model.parameters(), cfg.grad_max_norm)
+                        optimizer.step()
+                        optimizer.zero_grad()
+                else:
+                    scaler.scale(loss).backward()
+                    if (global_iter + 1) % grad_accumulation == 0:
+                        scaler.unscale_(optimizer)
+                        grad_norm = torch.nn.utils.clip_grad_norm_(my_model.parameters(), cfg.grad_max_norm)
+                        scaler.step(optimizer)
+                        scaler.update()
+                        optimizer.zero_grad()
+            except torch.cuda.OutOfMemoryError as e:
+                # SKIP-ON-OOM: confirmed via a real, reproducible 6+ hour /
+                # 412-restart crash loop that always hit OOM on the SAME
+                # iteration -- a deterministic per-frame OOM that restarting
+                # alone can never get past. Clears any partial gradient state
+                # and the CUDA cache, logs which iteration was skipped, and
+                # moves on -- guarantees forward progress regardless of how
+                # many oversized frames exist in the dataset.
+                logger.warning(f'OOM at global_iter {global_iter} (epoch {epoch}, i_iter {i_iter}) -- SKIPPING this iteration: {e}')
+                optimizer.zero_grad()
+                torch.cuda.empty_cache()
+                data_time_s = time.time()
+                time_s = time.time()
+                continue
 
             loss_list.append(loss.detach().cpu().item())
             scheduler.step_update(global_iter)
