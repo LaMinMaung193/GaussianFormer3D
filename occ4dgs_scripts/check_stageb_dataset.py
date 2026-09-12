@@ -14,6 +14,7 @@ import pickle
 import sys
 
 from mmengine import Config
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # GaussianFormer3D repo root -- script now lives one level deeper, in occ4dgs_scripts/
 from dataset import OPENOCC_DATASET
 
 OCC4DGS_ROOT = os.path.expanduser("~/Documents/min/Occ4DGS")
