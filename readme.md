@@ -11,6 +11,21 @@ We propose a new LiDAR-camera fusion-based semantic occupancy prediction framewo
 
 ![teaser](./assets/gaussianformer3d_teaser_new.jpg)
 
+---
+
+## This Fork
+
+This is a modified fork of the original GaussianFormer3D repository above, extended for the **[Occ4DGS](https://github.com/LaMinMaung193/Occ4DGS)** project -- a feedforward, online dynamic 3D Gaussian Splatting system for occupancy prediction, built on top of GaussianFormer3D's own reconstruction pipeline.
+
+**Occ4DGS is the primary project repository** -- start there for the project overview, architecture, results, and full reproduction guide. This fork provides:
+
+- **`occ4dgs_scripts/`** -- all real Stage B training, evaluation, and benchmarking scripts written for the Occ4DGS project (dataset validation, checkpoint evaluation, the efficiency benchmark, qualitative visualization, and more).
+- **A modification to `train.py`** -- an OOM-skip patch (a try/except around the forward/backward/optimizer step) added after a real, recurring out-of-memory issue during full-scale Stage A training; see Occ4DGS's own `EXPERIMENT_LOG.md` for the full story.
+
+Everything below this section is the original authors' own documentation, unchanged.
+
+---
+
 
 ## News
 - **[2026/01/31]** GaussianFormer3D is accepted to ICRA 2026!
