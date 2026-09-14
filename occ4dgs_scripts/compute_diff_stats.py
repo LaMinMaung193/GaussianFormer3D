@@ -12,7 +12,7 @@ Does NOT save full point clouds (140 scenes x ~28MB would be ~4GB, not
 needed) -- only scalar counts, per-scene and aggregate.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python compute_diff_stats.py
+    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python occ4dgs_scripts/compute_diff_stats.py
 """
 import json
 import os

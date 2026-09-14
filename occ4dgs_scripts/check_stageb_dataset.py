@@ -7,7 +7,7 @@ build_stageb_manifest.py's output, wraps it, and pulls a few samples directly
 indexing logic is genuinely correct, not just plausible.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python check_stageb_dataset.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_stageb_dataset.py
 """
 import os
 import pickle

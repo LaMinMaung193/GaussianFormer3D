@@ -16,7 +16,7 @@ whether driveable_surface/vegetation appear in geometrically plausible
 places once rendered, as a concrete sanity check.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python render_gaussians.py
+    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python occ4dgs_scripts/render_gaussians.py
 """
 import os
 import pickle

@@ -11,7 +11,7 @@ persistent total_seen/total_correct/total_positive attributes, confirmed
 against real source, not guessed).
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python eval_stageb_checkpoint.py --checkpoint <path> --num_blocks <L> --out <json_path>
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/eval_stageb_checkpoint.py --checkpoint <path> --num_blocks <L> --out <json_path>
 """
 import argparse
 import json

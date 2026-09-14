@@ -14,7 +14,7 @@ with GPU warmup and torch.cuda.synchronize() around every timed block
 (required for accurate GPU timing, since CUDA calls are asynchronous).
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python benchmark_efficiency.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/benchmark_efficiency.py
 """
 import json
 import os

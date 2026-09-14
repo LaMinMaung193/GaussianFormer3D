@@ -7,7 +7,7 @@ cached G_0. Confirms the whole real-data path runs end to end -- not just synthe
 shapes.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python check_real_feature_wiring.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_real_feature_wiring.py
 """
 import os
 import sys

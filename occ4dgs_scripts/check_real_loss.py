@@ -18,7 +18,7 @@ Confirmed against real source before writing this (not guessed):
     exactly from train.py's own real training loop (line ~247-252).
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python check_real_loss.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_real_loss.py
 """
 import os
 import sys

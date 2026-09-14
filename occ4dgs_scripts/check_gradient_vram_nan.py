@@ -12,7 +12,7 @@ purely to exercise the full backward graph and confirm gradients genuinely
 flow, not to test anything about loss design.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python check_gradient_vram_nan.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_gradient_vram_nan.py
 """
 import os
 import sys

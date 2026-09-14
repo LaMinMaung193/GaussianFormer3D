@@ -9,7 +9,7 @@ mechanism learn anything at all" -- the earlier 20-iteration run only sampled
 20 different, never-repeated scenes, which tells us nothing about learning.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python gate_check_stageb.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/gate_check_stageb.py
 """
 import os
 import pickle

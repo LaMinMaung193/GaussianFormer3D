@@ -7,7 +7,7 @@ features -> G_1. The one thing the frame-0-only test never exercised: an actual,
 non-identity ego-motion transform.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python check_cross_frame.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_cross_frame.py
 """
 import os
 import sys

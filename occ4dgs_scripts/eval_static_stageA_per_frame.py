@@ -18,7 +18,7 @@ one scene at a time, no_grad throughout, explicit cache-clearing between
 scenes.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python eval_static_stageA_per_frame.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/eval_static_stageA_per_frame.py
 """
 import os
 import pickle

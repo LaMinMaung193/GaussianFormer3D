@@ -14,7 +14,7 @@ scenes and simplified to frame 0 (no motion-pair filtering needed, since
 there's no deformation involved here at all).
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python check_release_full150.py
+    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_release_full150.py
 """
 import os
 import sys

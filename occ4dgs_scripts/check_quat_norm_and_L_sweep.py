@@ -12,7 +12,7 @@ Reuses the same real Stage A checkpoint + real cross-frame data setup already
 verified working. Loads real data ONCE, then loops over L values.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONNOUSERSITE=1 python check_quat_norm_and_L_sweep.py
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/check_quat_norm_and_L_sweep.py
 """
 import os
 import sys

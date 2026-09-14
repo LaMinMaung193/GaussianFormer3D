@@ -8,7 +8,7 @@ saves the raw data (not the render itself -- rendering is a separate,
 fast step) for building BEV comparison figures.
 
 Run from GaussianFormer3D repo root, in the gf3d env:
-    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python render_qualitative.py
+    PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 python occ4dgs_scripts/render_qualitative.py
 """
 import json
 import os

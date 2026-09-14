@@ -11,7 +11,7 @@ mirrors train.py's real training loop EXACTLY (confirmed against train.py lines
 200-243) -- not assumed or reimplemented independently.
 
 Usage:
-    PYTHONNOUSERSITE=1 python extract_g0_cache.py --checkpoint out/nuscenes_surroundocc_gs25600_full/latest.pth
+    PYTHONNOUSERSITE=1 python occ4dgs_scripts/extract_g0_cache.py --checkpoint out/nuscenes_surroundocc_gs25600_full/latest.pth
 """
 import argparse
 import os
